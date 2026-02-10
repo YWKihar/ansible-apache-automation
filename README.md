@@ -1,66 +1,100 @@
-# Ansible Apache Automation 🚀
+# Ansible Apache Automation using Roles 🚀
 
-Production-style Ansible automation to manage an **Apache Web Server** on **AWS EC2 (Ubuntu 24.04 LTS)**.
+A production-style Ansible project that manages the full lifecycle of an **Apache Web Server** on **AWS EC2 Ubuntu 24.04 LTS** using a clean **Ansible Roles (Galaxy structure)** approach.
 
-This project demonstrates real Infrastructure-as-Code (IaC) practices, including secure inventory handling, idempotent configuration, and clean service lifecycle management using Ansible playbooks.
+This repository demonstrates real DevOps engineering practices: modular design, reusable roles, secure inventory handling, and idempotent infrastructure configuration.
 
 ---
 
-## 📌 What This Project Demonstrates
+## 📌 Project Purpose
 
-This repository is designed to showcase practical DevOps skills:
+This project is built to demonstrate:
 
-- Automated software provisioning with Ansible
-- Idempotent server configuration
+- Infrastructure as Code (IaC) with Ansible
+- Proper use of **Ansible Roles**
 - Service lifecycle management (install, start, stop, remove)
-- Secure handling of sensitive files using `.gitignore`
-- Clean, reproducible infrastructure setup on AWS EC2
+- Secure DevOps practices
+- Clean, modular, reusable automation design
 
 ---
 
 ## 🧱 Infrastructure Context
 
-| Component        | Details                          |
-|------------------|----------------------------------|
-| Control Node     | Fedora / Ubuntu with Ansible     |
-| Target Nodes     | AWS EC2 - Ubuntu 24.04 LTS       |
-| Access Method    | SSH using `.pem` key             |
-| Inventory Style  | Local `hosts.ini` (ignored for security) |
+| Component      | Details                          |
+|----------------|----------------------------------|
+| Control Node   | Fedora / Ubuntu with Ansible     |
+| Target Nodes   | AWS EC2 – Ubuntu 24.04 LTS      |
+| Access Method  | SSH using `.pem` key            |
+| Inventory      | Local `hosts.ini` (ignored)     |
 
 ---
 
-## 📂 Repository Structure
+## 📂 Project Structure (Galaxy Standard)
 
 ```
 ansible-apache-automation/
 │
-├── Install.yaml      # Install and start Apache
-├── Remove.yaml       # Stop and remove Apache
-├── .gitignore        # Prevents upload of keys and inventory
-└── README.md
+├── Install.yaml
+├── Remove.yaml
+├── hosts.ini              # ignored for security
+├── .gitignore
+│
+└── roles/
+    ├── Install/
+    │   ├── tasks/main.yml
+    │   ├── handlers/
+    │   ├── defaults/
+    │   ├── vars/
+    │   ├── templates/
+    │   └── meta/
+    │
+    └── Remove/
+        ├── tasks/main.yml
+        ├── handlers/
+        ├── defaults/
+        ├── vars/
+        ├── templates/
+        └── meta/
 ```
 
 ---
 
-## 🔐 Security First
+## 🧠 Roles Overview
 
-This project follows DevOps security best practices:
+### 🔹 Install Role
+Responsible for:
 
-- **No public IP addresses** are stored in the repo
-- **No SSH keys** are uploaded
-- The inventory file `hosts.ini` is intentionally ignored
+- Installing Apache package
+- Updating apt cache
+- Starting Apache service
+- Enabling service on boot
 
-You must create your own local inventory file.
+### 🔹 Remove Role
+Responsible for:
+
+- Stopping Apache service
+- Disabling it from boot
+- Removing the Apache package completely
+
+---
+
+## 🔐 Security Best Practices
+
+Sensitive data is never uploaded:
+
+- No public IP addresses
+- No SSH private keys
+- No real inventory file
+
+You must create your own local `hosts.ini`.
 
 ---
 
 ## ⚙️ Prerequisites
 
-Before running the playbooks, ensure:
-
-- Ansible is installed on your control node
-- You have an AWS EC2 instance running Ubuntu
-- You have the `.pem` SSH key for access
+- Ansible installed on control node
+- AWS EC2 Ubuntu instance
+- SSH `.pem` key
 
 ---
 
@@ -73,9 +107,9 @@ cd ansible-apache-automation
 
 ---
 
-## 📝 Step 2 — Create Your Inventory File
+## 📝 Step 2 — Create Your Inventory
 
-Create a file named `hosts.ini` in the project root:
+Create `hosts.ini`:
 
 ```ini
 [WEB]
@@ -84,9 +118,7 @@ YOUR_EC2_PUBLIC_IP ansible_user=ubuntu
 
 ---
 
-## 📝 Step 3 — Secure Your SSH Key
-
-Place your `.pem` file inside the project folder and run:
+## 📝 Step 3 — Secure Your Key
 
 ```bash
 chmod 400 your-key.pem
@@ -96,13 +128,13 @@ chmod 400 your-key.pem
 
 ## 🚀 Usage
 
-### ▶️ Install and Start Apache
+### ▶️ Install & Start Apache (Using Install Role)
 
 ```bash
 ansible-playbook -i hosts.ini Install.yaml --key-file your-key.pem
 ```
 
-### ⛔ Stop and Remove Apache
+### ⛔ Stop & Remove Apache (Using Remove Role)
 
 ```bash
 ansible-playbook -i hosts.ini Remove.yaml --key-file your-key.pem
@@ -110,33 +142,32 @@ ansible-playbook -i hosts.ini Remove.yaml --key-file your-key.pem
 
 ---
 
-## ✅ Expected Outcome
+## ✅ Expected Result
 
 After running the install playbook:
 
-- Apache will be installed
-- The service will be started
-- Apache will be enabled to start on boot
-- You can access the default Apache page via your EC2 public IP
+- Apache is installed
+- Service is running
+- Service enabled at boot
+- Default Apache page accessible via EC2 public IP
 
 ---
 
-## 🧠 Why This Project Matters
+## 🎯 What This Proves
 
-This repository is not just about installing Apache.
+This project proves understanding of:
 
-It shows understanding of:
-
+- Ansible Roles (Galaxy structure)
+- Modular automation design
 - Infrastructure as Code principles
-- Secure DevOps practices
-- Ansible playbook structure
-- Real-world cloud server management
+- Secure DevOps repository practices
+- Real-world cloud server automation
 
 ---
 
 ## 👤 Maintainer
 
 **Yousef Kihar**  
-DevOps | Automation | Cloud Engineering
+DevOps Engineer | Automation | Cloud
 
 GitHub: https://github.com/YWKihar

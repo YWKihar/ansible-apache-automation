@@ -2,15 +2,8 @@
 - name: Remove Apache on WEB servers
   hosts: WEB
   become: yes
-  tasks:
-    - name: Stop & Disable Apache 
-      service:
-       name: apache2
-       state: stopped
-       enabled: no
+  roles:
+  
+   - Remove
 
-    - name: Remove Apache
-      apt:
-        name: apache2
-        state: absent
         

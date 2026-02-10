@@ -1,0 +1,11 @@
+---
+    - name: Stop & Disable Apache 
+      service:
+       name: apache2
+       state: stopped
+       enabled: no
+
+    - name: Remove Apache
+      apt:
+        name: apache2
+        state: absent
