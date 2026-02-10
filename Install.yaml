@@ -1,0 +1,16 @@
+---
+- name: Install and Start Apache on WEB servers
+  hosts: WEB
+  become: yes
+  tasks:
+    - name: Install apache2 package and update cache
+      apt:
+        name: apache2
+        state: present
+        update_cache: yes
+
+    - name: Start apache2 service
+      service:
+        name: apache2
+        state: started
+        enabled: yes
