@@ -22,7 +22,7 @@ This project is built to demonstrate:
 
 | Component      | Details                          |
 |----------------|----------------------------------|
-| Control Node   | Fedora / Ubuntu with Ansible     |
+| Control Node   | Ubuntu with Ansible             |
 | Target Nodes   | AWS EC2 – Ubuntu 24.04 LTS      |
 | Access Method  | SSH using `.pem` key            |
 | Inventory      | Local `hosts.ini` (ignored)     |
