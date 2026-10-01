@@ -1,173 +1,92 @@
-# Ansible Apache Automation using Roles 🚀
+# Ansible Apache Automation
 
-A production-style Ansible project that manages the full lifecycle of an **Apache Web Server** on **AWS EC2 Ubuntu 24.04 LTS** using a clean **Ansible Roles (Galaxy structure)** approach.
+An Ansible project that automates the Apache HTTP Server lifecycle on Linux hosts using reusable Ansible roles.
 
-This repository demonstrates real DevOps engineering practices: modular design, reusable roles, secure inventory handling, and idempotent infrastructure configuration.
+## What It Does
 
----
+The repository contains two playbooks:
 
-## 📌 Project Purpose
+- `Install.yaml` — applies the `Install` role to the `WEB` inventory group, updates the APT cache, installs Apache2, and starts/enables the service.
+- `Remove.yaml` — applies the `Remove` role to the `WEB` inventory group, stops/disables Apache2, and removes the package.
 
-This project is built to demonstrate:
+## Repository Structure
 
-- Infrastructure as Code (IaC) with Ansible
-- Proper use of **Ansible Roles**
-- Service lifecycle management (install, start, stop, remove)
-- Secure DevOps practices
-- Clean, modular, reusable automation design
-
----
-
-## 🧱 Infrastructure Context
-
-| Component      | Details                          |
-|----------------|----------------------------------|
-| Control Node   | Ubuntu with Ansible             |
-| Target Nodes   | AWS EC2 – Ubuntu 24.04 LTS      |
-| Access Method  | SSH using `.pem` key            |
-| Inventory      | Local `hosts.ini` (ignored)     |
-
----
-
-## 📂 Project Structure (Galaxy Standard)
-
-```
+```text
 ansible-apache-automation/
-│
 ├── Install.yaml
 ├── Remove.yaml
-├── hosts.ini              # ignored for security
-├── .gitignore
-│
-└── roles/
-    ├── Install/
-    │   ├── tasks/main.yml
-    │   ├── handlers/
-    │   ├── defaults/
-    │   ├── vars/
-    │   ├── templates/
-    │   └── meta/
-    │
-    └── Remove/
-        ├── tasks/main.yml
-        ├── handlers/
-        ├── defaults/
-        ├── vars/
-        ├── templates/
-        └── meta/
+├── Install/
+│   ├── defaults/
+│   ├── handlers/
+│   ├── meta/
+│   ├── tasks/
+│   ├── tests/
+│   └── vars/
+├── Remove/
+│   ├── defaults/
+│   ├── handlers/
+│   ├── meta/
+│   ├── tasks/
+│   ├── tests/
+│   └── vars/
+└── .gitignore
 ```
 
----
+## Requirements
 
-## 🧠 Roles Overview
+- Ansible
+- A Debian/Ubuntu target host with APT
+- SSH access to the target host
+- Privilege escalation (`become`) access
 
-### 🔹 Install Role
-Responsible for:
+## Inventory
 
-- Installing Apache package
-- Updating apt cache
-- Starting Apache service
-- Enabling service on boot
-
-### 🔹 Remove Role
-Responsible for:
-
-- Stopping Apache service
-- Disabling it from boot
-- Removing the Apache package completely
-
----
-
-## 🔐 Security Best Practices
-
-Sensitive data is never uploaded:
-
-- No public IP addresses
-- No SSH private keys
-- No real inventory file
-
-You must create your own local `hosts.ini`.
-
----
-
-## ⚙️ Prerequisites
-
-- Ansible installed on control node
-- AWS EC2 Ubuntu instance
-- SSH `.pem` key
-
----
-
-## 📝 Step 1 — Clone the Repository
-
-```bash
-git clone https://github.com/YWKihar/ansible-apache-automation.git
-cd ansible-apache-automation
-```
-
----
-
-## 📝 Step 2 — Create Your Inventory
-
-Create `hosts.ini`:
+Create a local inventory such as:
 
 ```ini
 [WEB]
-YOUR_EC2_PUBLIC_IP ansible_user=ubuntu
+YOUR_SERVER_IP ansible_user=ubuntu
 ```
 
----
+The playbooks expect the inventory group name `WEB`.
 
-## 📝 Step 3 — Secure Your Key
+## Run
 
-```bash
-chmod 400 your-key.pem
-```
-
----
-
-## 🚀 Usage
-
-### ▶️ Install & Start Apache (Using Install Role)
+Install Apache:
 
 ```bash
 ansible-playbook -i hosts.ini Install.yaml --key-file your-key.pem
 ```
 
-### ⛔ Stop & Remove Apache (Using Remove Role)
+Remove Apache:
 
 ```bash
 ansible-playbook -i hosts.ini Remove.yaml --key-file your-key.pem
 ```
 
----
+## Automation Flow
 
-## ✅ Expected Result
+```text
+Inventory (WEB)
+      │
+      ├── Install.yaml ──> Install role ──> APT install ──> start + enable Apache
+      │
+      └── Remove.yaml ──> Remove role ──> stop + disable ──> remove Apache
+```
 
-After running the install playbook:
+## What I Practiced
 
-- Apache is installed
-- Service is running
-- Service enabled at boot
-- Default Apache page accessible via EC2 public IP
+- Ansible playbooks
+- Ansible roles and role-based organization
+- Package management with APT
+- Linux service management
+- SSH-based remote automation
+- Privilege escalation with `become`
 
----
+## Notes
 
-## 🎯 What This Proves
+The automation targets Debian/Ubuntu-style systems because the roles use the APT package manager and the `apache2` service name.
 
-This project proves understanding of:
+## Author
 
-- Ansible Roles (Galaxy structure)
-- Modular automation design
-- Infrastructure as Code principles
-- Secure DevOps repository practices
-- Real-world cloud server automation
-
----
-
-## 👤 Maintainer
-
-**Yousef Kihar**  
-DevOps Engineer | Automation | Cloud
-
-GitHub: https://github.com/YWKihar
+Yousef Kihar — [GitHub](https://github.com/YWKihar)
